@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Amazônia</title>
+    <style>
+        body {
+            background-color: #FFFF99; /* Amarelo suave */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #4682B4; /* Azul aço */
+            padding: 50px;
+            border-radius: 10px;
+            color: white;
+        }
+        .question {
+            display: none;
+        }
+        .question.active {
+            display: block;
+        }
+        button {
+            background-color: #32CD32; /* Verde limão */
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #228B22; /* Verde mais escuro */
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #00FF00; /* Verde brilhante */
+        }
+        .wrong {
+            color: #FF0000; /* Vermelho */
+        }
+        #next-btn {
+            display: none;
+            background-color: #FFFF99; /* Amarelo suave */
+            color: #4682B4; /* Azul aço */
+        }
+        #next-btn:hover {
+            background-color: #FFD700; /* Amarelo mais escuro */
+        }
+        h1, h2, h3 {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="start-screen">
+            <h1>Amazônia Desafiadora</h1>
+            <input type="text" id="player-name" placeholder="Digite seu nome">
+            <button onclick="startQuiz()">Iniciar Quiz</button>
+        </div>
+
+        <div id="quiz" style="display: none;">
+            <h2>Bem-vindo(a), <span id="display-name"></span>!</h2>
+            <div id="progress">Perguntas respondidas: <span id="answered">0</span> - Restam: <span id="remaining">20</span></div>
+            <div id="score">Pontuação: <span id="points">0</span>/20</div>
+
+            <!-- Perguntas -->
+            <div id="q1" class="question active">
+                <h3>1. Qual é o maior rio da Amazônia?</h3>
+                <button onclick="checkAnswer(1, 'Rio Amazonas', true)">Rio Amazonas</button>
+                <button onclick="checkAnswer(1, 'Rio Negro', false)">Rio Negro</button>
+                <button onclick="checkAnswer(1, 'Rio Solimões', false)">Rio Solimões</button>
+                <div id="feedback1" class="feedback"></div>
+            </div>
+
+            <div id="q2" class="question">
+                <h3>2. Qual animal é conhecido como o "rei da Amazônia"?</h3>
+                <button onclick="checkAnswer(2, 'Onça-pintada', true)">Onça-pintada</button>
+                <button onclick="checkAnswer(2, 'Sucuri', false)">Sucuri</button>
+                <button onclick="checkAnswer(2, 'Pirarucu', false)">Pirarucu</button>
+                <div id="feedback2" class="feedback"></div>
+            </div>
+
+            <div id="q3" class="question">
+                <h3>3. Qual é a maior floresta tropical do planeta?</h3>
+                <button onclick="checkAnswer(3, 'Amazônia', true)">Amazônia</button>
+                <button onclick="checkAnswer(3, 'Floresta do Congo', false)">Floresta do Congo</button>
+                <button onclick="checkAnswer(3, 'Floresta de Bornéu', false)">Floresta de Bornéu</button>
+                <div id="feedback3" class="feedback"></div>
+            </div>
+
+            <div id="q4" class="question">
+                <h3>4. Qual árvore produz a castanha-do-pará?</h3>
+                <button onclick="checkAnswer(4, 'Castanheira', true)">Castanheira</button>
+                <button onclick="checkAnswer(4, 'Seringueira', false)">Seringueira</button>
+                <button onclick="checkAnswer(4, 'Açaizeiro', false)">Açaizeiro</button>
+                <div id="feedback4" class="feedback"></div>
+            </div>
+
+            <div id="q5" class="question">
+                <h3>5. Qual é o principal benefício da Amazônia para o clima?</h3>
+                <button onclick="checkAnswer(5, 'Produção de oxigênio', true)">Produção de oxigênio</button>
+                <button onclick="checkAnswer(5, 'Absorção de nitrogênio', false)">Absorção de nitrogênio</button>
+                <button onclick="checkAnswer(5, 'Emissão de carbono', false)">Emissão de carbono</button>
+                <div id="feedback5" class="feedback"></div>
+            </div>
+
+            <div id="q6" class="question">
+                <h3>6. Qual ave colorida é típica da Amazônia?</h3>
+                <button onclick="checkAnswer(6, 'Arara', true)">Arara</button>
+                <button onclick="checkAnswer(6, 'Gavião', false)">Gavião</button>
+                <button onclick="checkAnswer(6, 'Urubu', false)">Urubu</button>
+                <div id="feedback6" class="feedback"></div>
+            </div>
+
+            <div id="q7" class="question">
+                <h3>7. Qual é a maior cobra da Amazônia?</h3>
+                <button onclick="checkAnswer(7, 'Sucuri', true)">Sucuri</button>
+                <button onclick="checkAnswer(7, 'Jiboia', false)">Jiboia</button>
+                <button onclick="checkAnswer(7, 'Cobra-cipó', false)">Cobra-cipó</button>
+                <div id="feedback7" class="feedback"></div>
+            </div>
+
+            <div id="q8" class="question">
+                <h3>8. Qual peixe amazônico pode chegar a 3 metros?</h3>
+                <button onclick="checkAnswer(8, 'Pirarucu', true)">Pirarucu</button>
+                <button onclick="checkAnswer(8, 'Tambaqui', false)">Tambaqui</button>
+                <button onclick="checkAnswer(8, 'Dourado', false)">Dourado</button>
+                <div id="feedback8" class="feedback"></div>
+            </div>
+
+            <div id="q9" class="question">
+                <h3>9. Qual é a maior ameaça à Amazônia hoje?</h3>
+                <button onclick="checkAnswer(9, 'Desmatamento', true)">Desmatamento</button>
+                <button onclick="checkAnswer(9, 'Poluição dos rios', false)">Poluição dos rios</button>
+                <button onclick="checkAnswer(9, 'Caça ilegal', false)">Caça ilegal</button>
+                <div id="feedback9" class="feedback"></div>
+            </div>
+
+            <div id="q10" class="question">
+                <h3>10. Quantos países compartilham a Amazônia?</h3>
+                <button onclick="checkAnswer(10, '9', true)">9</button>
+                <button onclick="checkAnswer(10, '6', false)">6</button>
+                <button onclick="checkAnswer(10, '12', false)">12</button>
+                <div id="feedback10" class="feedback"></div>
+            </div>
+
+            <div id="q11" class="question">
+                <h3>11. Qual é o maior mamífero aquático da Amazônia?</h3>
+                <button onclick="checkAnswer(11, 'Boto-cor-de-rosa', true)">Boto-cor-de-rosa</button>
+                <button onclick="checkAnswer(11, 'Peixe-boi', false)">Peixe-boi</button>
+                <button onclick="checkAnswer(11, 'Ariranha', false)">Ariranha</button>
+                <div id="feedback11" class="feedback"></div>
+            </div>
+
+            <div id="q12" class="question">
+                <h3>12. Qual fruta típica da Amazônia é usada em sucos e sorvetes?</h3>
+                <button onclick="checkAnswer(12, 'Açaí', true)">Açaí</button>
+                <button onclick="checkAnswer(12, 'Cupuaçu', false)">Cupuaçu</button>
+                <button onclick="checkAnswer(12, 'Guaraná', false)">Guaraná</button>
+                <div id="feedback12" class="feedback"></div>
+            </div>
+
+            <div id="q13" class="question">
+                <h3>13. Qual é o maior felino da Amazônia?</h3>
+                <button onclick="checkAnswer(13, 'Onça-pintada', true)">Onça-pintada</button>
+                <button onclick="checkAnswer(13, 'Jaguatirica', false)">Jaguatirica</button>
+                <button onclick="checkAnswer(13, 'Gato-maracajá', false)">Gato-maracajá</button>
+                <div id="feedback13" class="feedback"></div>
+            </div>
+
+            <div id="q14" class="question">
+                <h3>14. Qual é o nome do encontro das águas dos rios Negro e Solimões?</h3>
+                <button onclick="checkAnswer(14, 'Encontro das Águas', true)">Encontro das Águas</button>
+                <button onclick="checkAnswer(14, 'Confluência Negra', false)">Confluência Negra</button>
+                <button onclick="checkAnswer(14, 'Junção Amazônica', false)">Junção Amazônica</button>
+                <div id="feedback14" class="feedback"></div>
+            </div>
+
+            <div id="q15" class="question">
+                <h3>15. Qual planta da Amazônia é usada para fazer látex?</h3>
+                <button onclick="checkAnswer(15, 'Seringueira', true)">Seringueira</button>
+                <button onclick="checkAnswer(15, 'Castanheira', false)">Castanheira</button>
+                <button onclick="checkAnswer(15, 'Açaizeiro', false)">Açaizeiro</button>
+                <div id="feedback15" class="feedback"></div>
+            </div>
+
+            <div id="q16" class="question">
+                <h3>16. Qual é o maior predador aquático da Amazônia?</h3>
+                <button onclick="checkAnswer(16, 'Pirarucu', true)">Pirarucu</button>
+                <button onclick="checkAnswer(16, 'Piranha', false)">Piranha</button>
+                <button onclick="checkAnswer(16, 'Jacaré-açu', false)">Jacaré-açu</button>
+                <div id="feedback16" class="feedback"></div>
+            </div>
+
+            <div id="q17" class="question">
+                <h3>17. Qual é o maior parque nacional da Amazônia brasileira?</h3>
+                <button onclick="checkAnswer(17, 'Parque Nacional do Tumucumaque', true)">Parque Nacional do Tumucumaque</button>
+                <button onclick="checkAnswer(17, 'Parque Nacional do Jaú', false)">Parque Nacional do Jaú</button>
+                <button onclick="checkAnswer(17, 'Parque Nacional da Amazônia', false)">Parque Nacional da Amazônia</button>
+                <div id="feedback17" class="feedback"></div>
+            </div>
+
+            <div id="q18" class="question">
+                <h3>18. Qual inseto da Amazônia é conhecido por suas picadas?</h3>
+                <button onclick="checkAnswer(18, 'Mosquito', true)">Mosquito</button>
+                <button onclick="checkAnswer(18, 'Formiga', false)">Formiga</button>
+                <button onclick="checkAnswer(18, 'Abelha', false)">Abelha</button>
+                <div id="feedback18" class="feedback"></div>
+            </div>
+
+            <div id="q19" class="question">
+                <h3>19. Qual é o principal gás absorvido pela Amazônia?</h3>
+                <button onclick="checkAnswer(19, 'Dióxido de carbono', true)">Dióxido de carbono</button>
+                <button onclick="checkAnswer(19, 'Oxigênio', false)">Oxigênio</button>
+                <button onclick="checkAnswer(19, 'Nitrogênio', false)">Nitrogênio</button>
+                <div id="feedback19" class="feedback"></div>
+            </div>
+
+            <div id="q20" class="question">
+                <h3>20. Qual é a capital do estado brasileiro com maior área na Amazônia?</h3>
+                <button onclick="checkAnswer(20, 'Manaus', true)">Manaus</button>
+                <button onclick="checkAnswer(20, 'Belém', false)">Belém</button>
+                <button onclick="checkAnswer(20, 'Porto Velho', false)">Porto Velho</button>
+                <div id="feedback20" class="feedback"></div>
+            </div>
+
+            <button id="next-btn" onclick="nextQuestion()">Próxima Pergunta</button>
+            <div id="result" style="display: none;">
+                <h2>Resultado Final</h2>
+                <p>Parabéns, <span id="final-name"></span>!</p>
+                <p>Sua pontuação: <span id="final-score"></span>/20</p>
+                <button onclick="restartQuiz()">Jogar Novamente</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let score = 0;
+        let answeredQuestions = 0;
+        let playerName = '';
+
+        function startQuiz() {
+            playerName = document.getElementById('player-name').value || 'Jogador';
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('display-name').textContent = playerName;
+        }
+
+        function checkAnswer(questionNum, answer, isCorrect) {
+            const feedbackDiv = document.getElementById(`feedback${questionNum}`);
+            const buttons = document.getElementById(`q${questionNum}`).getElementsByTagName('button');
+            
+            // Desabilitar botões da pergunta atual
+            for (let button of buttons) {
+                button.disabled = true;
+            }
+
+            // Feedback imediato
+            if (isCorrect) {
+                score++;
+                feedbackDiv.textContent = 'Correto!';
+                feedbackDiv.className = 'feedback correct';
+                document.getElementById('points').textContent = score;
+            } else {
+                feedbackDiv.textContent = 'Errado!';
+                feedbackDiv.className = 'feedback wrong';
+            }
+
+            // Atualizar progresso
+            answeredQuestions++;
+            document.getElementById('answered').textContent = answeredQuestions;
+            document.getElementById('remaining').textContent = 20 - answeredQuestions;
+
+            // Mostrar botão "Próxima Pergunta"
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            document.getElementById(`q${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+
+            if (currentQuestion <= 20) {
+                document.getElementById(`q${currentQuestion}`).classList.add('active');
+                document.getElementById('next-btn').style.display = 'none';
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('final-name').textContent = playerName;
+            document.getElementById('final-score').textContent = score;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 1;
+            score = 0;
+            answeredQuestions = 0;
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+            document.getElementById('points').textContent = '0';
+            document.getElementById('answered').textContent = '0';
+            document.getElementById('remaining').textContent = '20';
+            document.getElementById('q1').classList.add('active');
+            
+            // Resetar feedback e botões
+            for (let i = 1; i <= 20; i++) {
+                document.getElementById(`q${i}`).classList.remove('active');
+                document.getElementById(`feedback${i}`).textContent = '';
+                document.getElementById(`feedback${i}`).className = 'feedback';
+                const buttons = document.getElementById(`q${i}`).getElementsByTagName('button');
+                for (let button of buttons) {
+                    button.disabled = false;
+                }
+            }
+            document.getElementById('next-btn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
